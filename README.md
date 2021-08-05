@@ -1,4 +1,4 @@
-# WindowsSS
+# windows-ss
 
 Take screenshots quickly (15-20ms) on Windows.
 
