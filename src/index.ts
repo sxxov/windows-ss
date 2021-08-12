@@ -10,7 +10,7 @@ type UnpromisifyWindowsSS<T extends keyof WindowsSS> = Unpromisify<WindowsSS[T]>
 
 export class WindowsSS {}
 
-const WindowsSSMethodNames = keys<WindowsSS>();
+export const WindowsSSMethodNames = keys<WindowsSS>();
 
 export class WindowsSSFactory {
 	public create() {
