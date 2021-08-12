@@ -312,6 +312,9 @@ class ClientError extends Error {
     }
 }
 
+/**
+ * Based on C#'s `SystemException`.
+ */
 class CSError extends ClientError {
     constructor(message) {
         super(message);
@@ -340,6 +343,9 @@ __decorate([
     unenumerable
 ], CSError.prototype, "raw", void 0);
 
+/**
+ * Based on C#'s `ArgumentException`.
+ */
 let CSArgumentError = class CSArgumentError extends CSError {
     static from(error) {
         const instance = super.from(error);
@@ -352,16 +358,25 @@ CSArgumentError = __decorate([
     CSError.creatable('System.ArgumentError')
 ], CSArgumentError);
 
+/**
+ * Thrown when an invalid amount of arguments were provided.
+ */
 let InvalidArgumentCountError = class InvalidArgumentCountError extends CSArgumentError {
 };
 InvalidArgumentCountError = __decorate([
     CSError.creatable('SS.InvalidArgumentCountException')
 ], InvalidArgumentCountError);
+/**
+ * Thrown when an invalid Configuration object was provided.
+ */
 let InvalidConfigurationError = class InvalidConfigurationError extends CSArgumentError {
 };
 InvalidConfigurationError = __decorate([
     CSError.creatable('SS.InvalidConfigurationException')
 ], InvalidConfigurationError);
+/**
+ * Thrown when no match can be found with the provided arguments.
+ */
 let NoMatchError = class NoMatchError extends CSArgumentError {
 };
 NoMatchError = __decorate([

@@ -12,6 +12,9 @@ export interface CSException extends CSBaseException {
 export interface CSAggregateException extends CSBaseException {
     InnerException: CSException;
 }
+/**
+ * Based on C#'s `SystemException`.
+ */
 export declare class CSError extends ClientError {
     raw: CSException;
     static csNameToCSError: Map<string, typeof CSError>;
