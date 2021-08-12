@@ -131,7 +131,7 @@ namespace SS
 
 			if (result == null)
 			{
-				throw new NoMonitorMatchException(deviceIndex + " is not the index of any installed monitor", nameof(deviceIndex));
+				throw new NoMatchException(deviceIndex + " is not the index of any installed monitor", nameof(deviceIndex));
 			}
 
 			return result;
@@ -143,7 +143,7 @@ namespace SS
 
 			if (result == null)
 			{
-				throw new NoMonitorMatchException("\"" + deviceName + "\" is not the name of any installed monitor", nameof(deviceName));
+				throw new NoMatchException("\"" + deviceName + "\" is not the name of any installed monitor", nameof(deviceName));
 			}
 
 			return result;
@@ -268,7 +268,8 @@ namespace SS
 					return process.MainWindowHandle;
 				}
 			}
-			return IntPtr.Zero;
+
+			throw new NoMatchException("\"" + title + "\" is not the title of any opened window", nameof(title));
 		}
 
 		private static float GetDpiScaling(IntPtr hwnd)
