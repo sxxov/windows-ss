@@ -1,6 +1,6 @@
 export declare class ClientError extends Error {
     constructor(message?: string);
-    static toError<T extends ClientError>(obj: PlainErrorObject | Error): T;
+    static from<T = ClientError>(obj: PlainErrorObject | Error): T;
     toPlainObject(): PlainErrorObject;
 }
 export interface PlainErrorObject {

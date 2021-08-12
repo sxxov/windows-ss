@@ -16,14 +16,20 @@ namespace SS
 			var nullableDictionary = (dynamic) NullableExpandoObject.From(dictionary);
 			IDictionary<string, object>? rectDict;
 
-			Save = (string?) nullableDictionary.save;
-			Format = (string?) nullableDictionary.format ?? Save?[(Save.LastIndexOf(".") + 1)..] ?? DEFAULT_FORMAT;
-			Crop = (rectDict = (IDictionary<string, object>?) nullableDictionary.crop) == null
-				? null
-				: PlainRectangle.From(rectDict);
-			Bounds = (rectDict = (IDictionary<string, object>?) nullableDictionary.bounds) == null
-				? null
-				: PlainRectangle.From(rectDict);
+			try
+			{
+				Save = (string?) nullableDictionary.save;
+				Format = (string?) nullableDictionary.format ?? Save?[(Save.LastIndexOf(".") + 1)..] ?? DEFAULT_FORMAT;
+				Crop = (rectDict = (IDictionary<string, object>?) nullableDictionary.crop) == null
+					? null
+					: PlainRectangle.From(rectDict);
+				Bounds = (rectDict = (IDictionary<string, object>?) nullableDictionary.bounds) == null
+					? null
+					: PlainRectangle.From(rectDict);
+			} catch (Exception e)
+			{
+				throw new InvalidConfigurationException("Failed to apply configuration", e);
+			}
 		}
 	}
 }

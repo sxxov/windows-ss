@@ -32,16 +32,19 @@ var pathTool__namespace = /*#__PURE__*/_interopNamespace(pathTool);
 var pathTool__default = /*#__PURE__*/_interopDefaultLegacy(pathTool);
 var require$$0__default = /*#__PURE__*/_interopDefaultLegacy(require$$0);
 
-Object.defineProperties(globalThis, {
-    __filename: {
-        get: () => url.fileURLToPath((typeof document === 'undefined' ? new (require('u' + 'rl').URL)('file:' + __filename).href : (document.currentScript && document.currentScript.src || new URL('index.js', document.baseURI).href))),
-        enumerable: true,
-    },
-    __dirname: {
-        get: () => pathTool__namespace.dirname(url.fileURLToPath((typeof document === 'undefined' ? new (require('u' + 'rl').URL)('file:' + __filename).href : (document.currentScript && document.currentScript.src || new URL('index.js', document.baseURI).href)))),
-        enumerable: true,
-    },
-});
+if (globalThis.__dirname == null
+    && globalThis.__filename == null) {
+    Object.defineProperties(globalThis, {
+        __filename: {
+            get: () => url.fileURLToPath((typeof document === 'undefined' ? new (require('u' + 'rl').URL)('file:' + __filename).href : (document.currentScript && document.currentScript.src || new URL('index.js', document.baseURI).href))),
+            enumerable: true,
+        },
+        __dirname: {
+            get: () => pathTool__namespace.dirname(url.fileURLToPath((typeof document === 'undefined' ? new (require('u' + 'rl').URL)('file:' + __filename).href : (document.currentScript && document.currentScript.src || new URL('index.js', document.baseURI).href)))),
+            enumerable: true,
+        },
+    });
+}
 
 process.env.EDGE_USE_CORECLR = '1';
 process.env.EDGE_APP_ROOT = `${__dirname}/lib/SS/bin/Release/net5.0`;
@@ -241,13 +244,145 @@ class EdgeManager {
     }
 }
 
-const edge = EdgeManager.getEdgeInstance();
-class WindowsSS {
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 }
+
+// stolen wholesale from https://stackoverflow.com/a/61863345
+function unenumerable(target, name, desc) {
+    if (desc) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        desc.enumerable = false;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return desc;
+    }
+    Object.defineProperty(target, name, {
+        set(value) {
+            Object.defineProperty(this, name, {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                value,
+                writable: true,
+                configurable: true,
+            });
+        },
+        configurable: true,
+    });
+}
+
+class ClientError extends Error {
+    constructor(message = 'No message provided, an error with errors?') {
+        super(message);
+        this.name = this.constructor.name;
+        // eslint is drunk
+        // eslint-disable-next-line
+        Error.captureStackTrace?.(this, this.constructor);
+    }
+    static from(obj) {
+        const clientError = new this();
+        clientError.name = obj.name;
+        clientError.message = obj.message;
+        clientError.stack = obj.stack;
+        // @ts-expect-error
+        return clientError;
+    }
+    toPlainObject() {
+        return {
+            name: this.name,
+            message: this.message,
+            stack: this.stack,
+        };
+    }
+}
+
+class CSError extends ClientError {
+    constructor(message) {
+        super(message);
+    }
+    static from(error) {
+        const obj = this.getInnerException(error);
+        const instance = new this(obj.message);
+        instance.stack = `${instance.stack ? `${instance.stack}\n` : ''}[C#]\n${obj.StackTrace}`;
+        instance.raw = obj;
+        // @ts-expect-error
+        return instance;
+    }
+    static getInnerException(error) {
+        return error.InnerException
+            ? error.InnerException
+            : error;
+    }
+    static creatable(csName) {
+        return (target) => {
+            this.csNameToCSError.set(csName, target);
+        };
+    }
+}
+CSError.csNameToCSError = new Map();
+__decorate([
+    unenumerable
+], CSError.prototype, "raw", void 0);
+
+let CSArgumentError = class CSArgumentError extends CSError {
+    static from(error) {
+        const instance = super.from(error);
+        instance.paramName = instance.raw.ParamName;
+        // @ts-expect-error
+        return instance;
+    }
+};
+CSArgumentError = __decorate([
+    CSError.creatable('System.ArgumentError')
+], CSArgumentError);
+
+let InvalidArgumentCountError = class InvalidArgumentCountError extends CSArgumentError {
+};
+InvalidArgumentCountError = __decorate([
+    CSError.creatable('SS.InvalidArgumentCountException')
+], InvalidArgumentCountError);
+let InvalidConfigurationError = class InvalidConfigurationError extends CSArgumentError {
+};
+InvalidConfigurationError = __decorate([
+    CSError.creatable('SS.InvalidConfigurationException')
+], InvalidConfigurationError);
+let NoMatchError = class NoMatchError extends CSArgumentError {
+};
+NoMatchError = __decorate([
+    CSError.creatable('SS.NoMonitorMatchException')
+], NoMatchError);
+
+class CSErrorFactory {
+    create(error) {
+        const obj = CSError.getInnerException(error);
+        const CreatableCSError = CSError.csNameToCSError.get(obj.name);
+        if (CreatableCSError == null) {
+            return CSError.from(obj);
+        }
+        return CreatableCSError.from(obj);
+    }
+}
+
+const edge = EdgeManager.getEdgeInstance();
 const WindowsSSMethodNames = ["captureMonitorByIndex", "captureMonitorByIndexSync", "captureMonitorByName", "captureMonitorByNameSync", "capturePrimaryMonitor", "capturePrimaryMonitorSync", "captureWindowByTitle", "captureWindowByTitleSync", "captureActiveWindow", "captureActiveWindowSync", "getMonitorInfos", "getMonitorInfosSync"];
-class WindowsSSFactory {
-    create() {
-        const instance = new WindowsSS();
+class WindowsSS {
+    constructor() {
         WindowsSSMethodNames.forEach((methodName) => {
             const isSyncVariant = methodName.endsWith('Sync');
             const baseMethodName = isSyncVariant ? methodName.replace(/Sync$/, '') : methodName;
@@ -256,16 +391,27 @@ class WindowsSSFactory {
                 typeName: 'SS.Bridge',
                 methodName: `Invoke${baseMethodName[0].toUpperCase()}${baseMethodName.substr(1)}`,
             });
+            const csErrorFactory = new CSErrorFactory();
             if (isSyncVariant) {
                 // @ts-expect-error
-                instance[methodName] = (...args) => impl([...args], true);
+                this[methodName] = (...args) => {
+                    try {
+                        return impl([...args], true);
+                    }
+                    catch (err) {
+                        if (err instanceof Error) {
+                            throw csErrorFactory.create(err);
+                        }
+                        throw err;
+                    }
+                };
             }
             else {
                 // @ts-expect-error
-                instance[methodName] = async (...args) => new Promise((resolve, reject) => {
+                this[methodName] = async (...args) => new Promise((resolve, reject) => {
                     impl([...args], (err, res) => {
                         if (err) {
-                            reject(err);
+                            reject(csErrorFactory.create(err));
                             return;
                         }
                         resolve(res);
@@ -273,13 +419,11 @@ class WindowsSSFactory {
                 });
             }
         });
-        return instance;
     }
 }
-const { captureMonitorByIndex, captureMonitorByIndexSync, captureMonitorByName, captureMonitorByNameSync, capturePrimaryMonitor, capturePrimaryMonitorSync, captureWindowByTitle, captureWindowByTitleSync, captureActiveWindow, captureActiveWindowSync, getMonitorInfos, getMonitorInfosSync, } = new WindowsSSFactory().create();
+const { captureMonitorByIndex, captureMonitorByIndexSync, captureMonitorByName, captureMonitorByNameSync, capturePrimaryMonitor, capturePrimaryMonitorSync, captureWindowByTitle, captureWindowByTitleSync, captureActiveWindow, captureActiveWindowSync, getMonitorInfos, getMonitorInfosSync, } = new WindowsSS();
 
 exports.WindowsSS = WindowsSS;
-exports.WindowsSSFactory = WindowsSSFactory;
 exports.captureActiveWindow = captureActiveWindow;
 exports.captureActiveWindowSync = captureActiveWindowSync;
 exports.captureMonitorByIndex = captureMonitorByIndex;
@@ -292,4 +436,3 @@ exports.captureWindowByTitle = captureWindowByTitle;
 exports.captureWindowByTitleSync = captureWindowByTitleSync;
 exports.getMonitorInfos = getMonitorInfos;
 exports.getMonitorInfosSync = getMonitorInfosSync;
-//# sourceMappingURL=index.js.map
