@@ -2,6 +2,8 @@ import { keys } from 'ts-transformer-keys';
 import { EdgeManager } from './core/edge/manager';
 import type { Configuration } from './core/items/configuration';
 import type { MonitorInfo } from './core/items/monitorInfo';
+import type { CSAggregateException } from './resources/errors/ss/cs.error';
+import { CSErrorFactory } from './resources/errors/ss/cs.error.factory';
 
 const edge = EdgeManager.getEdgeInstance();
 
@@ -19,16 +21,27 @@ export class WindowsSS {
 				typeName: 'SS.Bridge',
 				methodName: `Invoke${baseMethodName[0].toUpperCase()}${baseMethodName.substr(1)}`,
 			});
+			const csErrorFactory = new CSErrorFactory();
 
 			if (isSyncVariant) {
 				// @ts-expect-error
-				this[methodName] = (...args) => impl([...args], true);
+				this[methodName] = (...args) => {
+					try {
+						return impl([...args], true);
+					} catch (err: unknown) {
+						if (err instanceof Error) {
+							throw csErrorFactory.create(err as CSAggregateException);
+						}
+
+						throw err;
+					}
+				};
 			} else {
 				// @ts-expect-error
 				this[methodName] = async (...args) => new Promise<unknown>((resolve, reject) => {
 					impl([...args], (err, res) => {
 						if (err) {
-							reject(err);
+							reject(csErrorFactory.create(err as CSAggregateException));
 
 							return;
 						}
