@@ -5,17 +5,12 @@ import type { MonitorInfo } from './core/items/monitorInfo';
 
 const edge = EdgeManager.getEdgeInstance();
 
-type Unpromisify<T extends (...args: any[]) => any> = (...args: Parameters<T>) => ReturnType<T> extends PromiseLike<infer U> ? U : T;
+type Unpromisify<T extends (...args: any[]) => any> = (...args: Parameters<T>) => ReturnType<T> extends PromiseLike<infer U> ? U : ReturnType<T>;
 type UnpromisifyWindowsSS<T extends keyof WindowsSS> = Unpromisify<WindowsSS[T]>;
 
-export class WindowsSS {}
-
-export const WindowsSSMethodNames = keys<WindowsSS>();
-
-export class WindowsSSFactory {
-	public create() {
-		const instance = new WindowsSS();
-
+const WindowsSSMethodNames = keys<WindowsSS>();
+export class WindowsSS {
+	constructor() {
 		WindowsSSMethodNames.forEach((methodName) => {
 			const isSyncVariant = methodName.endsWith('Sync');
 			const baseMethodName = isSyncVariant ? methodName.replace(/Sync$/, '') : methodName;
@@ -27,10 +22,10 @@ export class WindowsSSFactory {
 
 			if (isSyncVariant) {
 				// @ts-expect-error
-				instance[methodName] = (...args) => impl([...args], true);
+				this[methodName] = (...args) => impl([...args], true);
 			} else {
 				// @ts-expect-error
-				instance[methodName] = async (...args) => new Promise<unknown>((resolve, reject) => {
+				this[methodName] = async (...args) => new Promise<unknown>((resolve, reject) => {
 					impl([...args], (err, res) => {
 						if (err) {
 							reject(err);
@@ -43,8 +38,6 @@ export class WindowsSSFactory {
 				});
 			}
 		});
-
-		return instance;
 	}
 }
 
@@ -76,4 +69,4 @@ export const {
 	captureActiveWindowSync,
 	getMonitorInfos,
 	getMonitorInfosSync,
-} = new WindowsSSFactory().create();
+} = new WindowsSS();
