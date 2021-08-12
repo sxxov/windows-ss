@@ -118,21 +118,35 @@ namespace SS
 			return img;
 		}
 
-		public static Image? CaptureMonitor()
+		public static Image CaptureMonitor()
 		{
 			return CaptureMonitor(0);
 		}
 
-        public static Image? CaptureMonitor(int deviceIndex)
+        public static Image CaptureMonitor(int deviceIndex)
 		{
             var i = 0;
 
-			return CaptureMonitor((_) => i++ == deviceIndex);
+			var result = CaptureMonitor((_) => i++ == deviceIndex);
+
+			if (result == null)
+			{
+				throw new NoMonitorMatchException(deviceIndex + "is not the index of any installed monitor", nameof(deviceIndex));
+			}
+
+			return result;
 		}
 
-		public static Image? CaptureMonitor(string deviceName)
+		public static Image CaptureMonitor(string deviceName)
 		{
-			return CaptureMonitor((currentDeviceName) => currentDeviceName.Equals(deviceName));
+			var result = CaptureMonitor((currentDeviceName) => currentDeviceName.Equals(deviceName));
+
+			if (result == null)
+			{
+				throw new NoMonitorMatchException("\"" + deviceName + "\" is not the name of any installed monitor", nameof(deviceName));
+			}
+
+			return result;
 		}
 
         private static Image? CaptureMonitor(Func<string, bool> comparer)
@@ -220,14 +234,14 @@ namespace SS
 				"png" => ImageFormat.Png,
 				"tiff" => ImageFormat.Tiff,
 				"wmf" => ImageFormat.Wmf,
-				_ => throw new ArgumentException("Invalid format provided: " + format),
+				_ => throw new InvalidConfigurationException("\"" + format + "\" is not a valid image format", nameof(format)),
 			};
 		}
 
         public static byte[]? FlushImage(Image? image)
 		{
 			if (image == null) {
-                return null;
+                throw new ArgumentNullException(nameof(image));
             }
 
 			ImageFormat format = GetImageFormatFrom(Configuration.Format);
