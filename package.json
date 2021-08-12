@@ -13,9 +13,22 @@
     "dev": "rollup -c -w",
     "build": "rollup -c"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "screenshot",
+    "screenshots",
+    "typescript",
+    "screen-capture",
+    "screenshot-utility",
+    "desktop-screenshot",
+    "screenshot-desktop",
+    "windows",
+    "edge-js",
+    "csharp",
+    "dotnet",
+    "native"
+  ],
+  "author": "sxxov",
+  "license": "MIT",
   "repository": "sxxov/windows-ss",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",
