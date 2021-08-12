@@ -7,7 +7,7 @@
   "directories": {
     "lib": "lib"
   },
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "rollup -c -w",
@@ -29,7 +29,13 @@
     "eslint-config-xo": "^0.37.0",
     "eslint-config-xo-typescript": "^0.43.0",
     "rollup": "^2.56.0",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-execute": "^1.1.1",
     "rollup-plugin-import-assets": "^1.1.1",
+    "ts-transformer-keys": "^0.4.3",
     "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "edge-js": "^16.6.0"
   }
 }

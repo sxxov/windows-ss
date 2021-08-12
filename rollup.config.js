@@ -5,7 +5,9 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import json from '@rollup/plugin-json';
 import run from '@rollup/plugin-run';
-import importAssets from 'rollup-plugin-import-assets';
+import execute from 'rollup-plugin-execute';
+import del from 'rollup-plugin-delete';
+import keysTransformer from 'ts-transformer-keys/transformer';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -48,27 +50,30 @@ const plugins = [
 		preferBuiltins: true,
 	}),
 
-	commonjs(),
-
-	importAssets({
-		// files to import
-		include: [/\.ps1$/i],
-		// files to exclude
-		exclude: [],
-		// copy assets to output folder
-		emitAssets: true,
-		// name pattern for the asset copied
-		fileNames: 'lib/[name].[ext]',
-		// public path of the assets
-		publicPath: '',
+	commonjs({
+		ignoreDynamicRequires: true,
 	}),
+
+	production && del({ targets: 'dist/*' }),
+
+	execute([
+		'pushd "src/lib/SS" && dotnet build /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary -c Release && popd',
+		'xcopy "node_modules/edge-js/lib/native" "dist/native" /E/H/C/I/Y >nul',
+		'xcopy "node_modules/edge-js/lib/bootstrap" "dist/bootstrap" /E/H/C/I/Y >nul',
+		'xcopy "src/lib" "dist/lib" /E/H/C/I/Y >nul',
+	]),
 
 	json(),
 
 	typescript({
-		sourceMap: !production,
 		include: ['src/**/*.ts'],
 		declaration: production,
+		transformers: {
+			before: [{
+				type: 'program',
+				factory: keysTransformer,
+			}],
+		},
 	}),
 
 	!production && run(),
@@ -78,7 +83,7 @@ export default [{
 	input: 'src/index.ts',
 	output: {
 		sourcemap: !production,
-		format: 'esm',
+		format: 'cjs',
 		name: 'index',
 		dir: 'dist',
 		entryFileNames: 'index.js',

@@ -1,0 +1,15 @@
+C:\__Projects\VS Code\windows-ss\src\lib\SS\bin\Debug\net5.0\SS.deps.json
+C:\__Projects\VS Code\windows-ss\src\lib\SS\bin\Debug\net5.0\SS.dll
+C:\__Projects\VS Code\windows-ss\src\lib\SS\bin\Debug\net5.0\ref\SS.dll
+C:\__Projects\VS Code\windows-ss\src\lib\SS\bin\Debug\net5.0\SS.pdb
+C:\__Projects\VS Code\windows-ss\src\lib\SS\obj\Debug\net5.0\SS.csprojAssemblyReference.cache
+C:\__Projects\VS Code\windows-ss\src\lib\SS\obj\Debug\net5.0\SS.GeneratedMSBuildEditorConfig.editorconfig
+C:\__Projects\VS Code\windows-ss\src\lib\SS\obj\Debug\net5.0\SS.AssemblyInfoInputs.cache
+C:\__Projects\VS Code\windows-ss\src\lib\SS\obj\Debug\net5.0\SS.AssemblyInfo.cs
+C:\__Projects\VS Code\windows-ss\src\lib\SS\obj\Debug\net5.0\SS.csproj.CoreCompileInputs.cache
+C:\__Projects\VS Code\windows-ss\src\lib\SS\obj\Debug\net5.0\SS.dll
+C:\__Projects\VS Code\windows-ss\src\lib\SS\obj\Debug\net5.0\ref\SS.dll
+C:\__Projects\VS Code\windows-ss\src\lib\SS\obj\Debug\net5.0\SS.pdb
+C:\__Projects\VS Code\windows-ss\src\lib\SS\bin\Debug\net5.0\EdgeJs.dll
+C:\__Projects\VS Code\windows-ss\src\lib\SS\bin\Debug\net5.0\EdgeJs.pdb
+C:\__Projects\VS Code\windows-ss\src\lib\SS\obj\Debug\net5.0\SS.csproj.CopyComplete

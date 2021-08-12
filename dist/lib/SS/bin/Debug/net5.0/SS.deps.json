@@ -1,0 +1,95 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "SS/1.0.0": {
+        "dependencies": {
+          "System.Drawing.Common": "6.0.0-preview.6.21352.12",
+          "EdgeJs": "9.3.0.0"
+        },
+        "runtime": {
+          "SS.dll": {}
+        }
+      },
+      "Microsoft.Win32.SystemEvents/6.0.0-preview.6.21352.12": {
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.Win32.SystemEvents.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.35212"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/netcoreapp3.1/Microsoft.Win32.SystemEvents.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.35212"
+          }
+        }
+      },
+      "System.Drawing.Common/6.0.0-preview.6.21352.12": {
+        "dependencies": {
+          "Microsoft.Win32.SystemEvents": "6.0.0-preview.6.21352.12"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/System.Drawing.Common.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.35212"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/netcoreapp3.1/System.Drawing.Common.dll": {
+            "rid": "unix",
+            "assetType": "runtime",
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.35212"
+          },
+          "runtimes/win/lib/netcoreapp3.1/System.Drawing.Common.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.35212"
+          }
+        }
+      },
+      "EdgeJs/9.3.0.0": {
+        "runtime": {
+          "EdgeJs.dll": {
+            "assemblyVersion": "9.3.0.0",
+            "fileVersion": "9.3.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SS/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Win32.SystemEvents/6.0.0-preview.6.21352.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-PpG9FGC+bzPIcV9TF3jJrPVuZjPnaIe5UJ0B5jAQDKXrSf7qKcjklGMXR1bVxm+vD5dKMWXisA0xegY5gpxsdg==",
+      "path": "microsoft.win32.systemevents/6.0.0-preview.6.21352.12",
+      "hashPath": "microsoft.win32.systemevents.6.0.0-preview.6.21352.12.nupkg.sha512"
+    },
+    "System.Drawing.Common/6.0.0-preview.6.21352.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8XD8NIQhU7JAj5dfqOJPcO6wsIGG62G4qbRPISb8EQgTdnnmErmRe1OuiH//p85TqZJn9heUBzqvGe5IQMFgeg==",
+      "path": "system.drawing.common/6.0.0-preview.6.21352.12",
+      "hashPath": "system.drawing.common.6.0.0-preview.6.21352.12.nupkg.sha512"
+    },
+    "EdgeJs/9.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

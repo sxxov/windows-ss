@@ -1,0 +1,14 @@
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\bin\Release\netcoreapp1.1\bootstrap.deps.json
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\bin\Release\netcoreapp1.1\bootstrap.dll
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\bin\Release\netcoreapp1.1\bootstrap.pdb
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\bin\Release\netcoreapp1.1\Edge.js.CSharp.dll
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\bin\Release\netcoreapp1.1\EdgeJs.dll
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\bin\Release\netcoreapp1.1\EdgeJs.pdb
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\bin\Release\netcoreapp1.1\Edge.js.CSharp.pdb
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\obj\Release\netcoreapp1.1\bootstrap.csprojAssemblyReference.cache
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\obj\Release\netcoreapp1.1\bootstrap.AssemblyInfoInputs.cache
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\obj\Release\netcoreapp1.1\bootstrap.AssemblyInfo.cs
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\obj\Release\netcoreapp1.1\bootstrap.csproj.CoreCompileInputs.cache
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\obj\Release\netcoreapp1.1\bootstrap.csproj.CopyComplete
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\obj\Release\netcoreapp1.1\bootstrap.dll
+C:\__Projects\VS Code\windows-ss\node_modules\edge-js\lib\bootstrap\obj\Release\netcoreapp1.1\bootstrap.pdb

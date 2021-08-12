@@ -1,64 +1,27 @@
 /// <reference types="node" />
-export interface DisplayInfo {
-    /**
-     * @description The `DeviceName` property of a display.
-     */
-    id: string;
-    /**
-     * @description The friendly name of a display (Currently just an alias for `DeviceName`).
-     */
-    name: string;
-    /**
-     * @description The left edge of the bounding box of a display.
-     */
-    left: number;
-    /**
-     * @description The top edge of the bounding box of a display.
-     */
-    top: number;
-    /**
-     * @description The right edge of the bounding box of a display.
-     */
-    right: number;
-    /**
-     * @description The bottom edge of the bounding box of a display.
-     */
-    bottom: number;
-    /**
-     * @description The DPI multiplier of a display.
-     */
-    dpiScale: number;
-}
-export interface ScreenshotOptions {
-    /**
-     * @description The ID of the display to take a screenshot of. Probably retrieved by using `await `[`info()`](#info)`[0].id`
-     * @Default The id of the first monitor in the result of `await `[`info()`](#info).
-     */
-    displayId?: string;
-    /**
-     * @description The format of the returned buffer & saved file.
-     * @Default `'png'`
-     */
-    format?: 'png' | 'jpg' | 'jpeg' | 'bmp' | 'emf' | 'exif' | 'gif' | 'icon' | 'tiff' | 'wmf';
-    /**
-     * @description How much to carve off the edges.
-     * @Note These numbers should be whole numbers (integers).
-     */
-    crop?: [left: number, top: number, right: number, bottom: number];
-    /**
-     * @description The bounds where the screen will be captured.
-     * @Note These numbers should be whole numbers (integers).
-     */
-    bounds?: [left: number, top: number, right: number, bottom: number];
-    /**
-     * @description The path to where the screenshot will be saved to.
-     * @Note If this property is not provided, the screenshot is not saved.
-     */
-    save?: string;
-}
+import type { Configuration } from './core/items/configuration';
+import type { MonitorInfo } from './core/items/monitorInfo';
+declare type Unpromisify<T extends (...args: any[]) => any> = (...args: Parameters<T>) => ReturnType<T> extends PromiseLike<infer U> ? U : T;
+declare type UnpromisifyWindowsSS<T extends keyof WindowsSS> = Unpromisify<WindowsSS[T]>;
 export declare class WindowsSS {
-    static info(): Promise<DisplayInfo[]>;
-    static screenshot(options?: ScreenshotOptions): Promise<Buffer>;
-    private static getBufferFromStream;
 }
-export declare const info: typeof WindowsSS.info, screenshot: typeof WindowsSS.screenshot;
+export declare const WindowsSSMethodNames: (keyof WindowsSS)[];
+export declare class WindowsSSFactory {
+    create(): WindowsSS;
+}
+export interface WindowsSS {
+    captureMonitorByIndex(deviceIndex: number, config?: Configuration): Promise<Buffer | null>;
+    captureMonitorByIndexSync: UnpromisifyWindowsSS<'captureMonitorByIndex'>;
+    captureMonitorByName(deviceName: string, config?: Configuration): Promise<Buffer | null>;
+    captureMonitorByNameSync: UnpromisifyWindowsSS<'captureMonitorByName'>;
+    capturePrimaryMonitor(config: Configuration): Promise<Buffer | null>;
+    capturePrimaryMonitorSync: UnpromisifyWindowsSS<'capturePrimaryMonitor'>;
+    captureWindowByTitle(title: string, config?: Configuration): Promise<Buffer | null>;
+    captureWindowByTitleSync: UnpromisifyWindowsSS<'captureWindowByTitle'>;
+    captureActiveWindow(config?: Configuration): Promise<Buffer | null>;
+    captureActiveWindowSync: UnpromisifyWindowsSS<'captureActiveWindow'>;
+    getMonitorInfos(): MonitorInfo[];
+    getMonitorInfosSync: UnpromisifyWindowsSS<'getMonitorInfos'>;
+}
+export declare const captureMonitorByIndex: (deviceIndex: number, config?: Configuration | undefined) => Promise<Buffer | null>, captureMonitorByIndexSync: UnpromisifyWindowsSS<"captureMonitorByIndex">, captureMonitorByName: (deviceName: string, config?: Configuration | undefined) => Promise<Buffer | null>, captureMonitorByNameSync: UnpromisifyWindowsSS<"captureMonitorByName">, capturePrimaryMonitor: (config: Configuration) => Promise<Buffer | null>, capturePrimaryMonitorSync: UnpromisifyWindowsSS<"capturePrimaryMonitor">, captureWindowByTitle: (title: string, config?: Configuration | undefined) => Promise<Buffer | null>, captureWindowByTitleSync: UnpromisifyWindowsSS<"captureWindowByTitle">, captureActiveWindow: (config?: Configuration | undefined) => Promise<Buffer | null>, captureActiveWindowSync: UnpromisifyWindowsSS<"captureActiveWindow">, getMonitorInfos: () => MonitorInfo[], getMonitorInfosSync: UnpromisifyWindowsSS<"getMonitorInfos">;
+export {};

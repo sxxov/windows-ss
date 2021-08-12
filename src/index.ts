@@ -1,139 +1,79 @@
-import childProcess from 'child_process';
-import { promises as fs } from 'fs';
-import { fileURLToPath } from 'url';
-import * as pathTool from 'path';
-import coreLib from './lib/core.ps1';
-import infoLib from './lib/info.ps1';
+import { keys } from 'ts-transformer-keys';
+import { EdgeManager } from './core/edge/manager';
+import type { Configuration } from './core/items/configuration';
+import type { MonitorInfo } from './core/items/monitorInfo';
 
-const absoluteCoreLib = pathTool.join(fileURLToPath(import.meta.url), coreLib);
-const absoluteInfoLib = pathTool.join(fileURLToPath(import.meta.url), infoLib);
+const edge = EdgeManager.getEdgeInstance();
 
-// TODO: Add tests
+type Unpromisify<T extends (...args: any[]) => any> = (...args: Parameters<T>) => ReturnType<T> extends PromiseLike<infer U> ? U : T;
+type UnpromisifyWindowsSS<T extends keyof WindowsSS> = Unpromisify<WindowsSS[T]>;
 
-export interface DisplayInfo {
-	/**
-	 * @description The `DeviceName` property of a display.
-	 */
-	id: string;
-	/**
-	 * @description The friendly name of a display (Currently just an alias for `DeviceName`).
-	 */
-	name: string;
-	/**
-	 * @description The left edge of the bounding box of a display.
-	 */
-	left: number;
-	/**
-	 * @description The top edge of the bounding box of a display.
-	 */
-	top: number;
-	/**
-	 * @description The right edge of the bounding box of a display.
-	 */
-	right: number;
-	/**
-	 * @description The bottom edge of the bounding box of a display.
-	 */
-	bottom: number;
-	/**
-	 * @description The DPI multiplier of a display.
-	 */
-	dpiScale: number;
-}
+export class WindowsSS {}
 
-export interface ScreenshotOptions {
-	/**
-	 * @description The ID of the display to take a screenshot of. Probably retrieved by using `await `[`info()`](#info)`[0].id`
-	 * @Default The id of the first monitor in the result of `await `[`info()`](#info).
-	 */
-	displayId?: string;
-	/**
-	 * @description The format of the returned buffer & saved file.
-	 * @Default `'png'`
-	 */
-	format?: 'png' | 'jpg' | 'jpeg' | 'bmp' | 'emf' | 'exif' | 'gif' | 'icon' | 'tiff' | 'wmf';
-	/**
-	 * @description How much to carve off the edges.
-	 * @Note These numbers should be whole numbers (integers).
-	 */
-	crop?: [left: number, top: number, right: number, bottom: number];
-	/**
-	 * @description The bounds where the screen will be captured.
-	 * @Note These numbers should be whole numbers (integers).
-	 */
-	bounds?: [left: number, top: number, right: number, bottom: number];
-	/**
-	 * @description The path to where the screenshot will be saved to.
-	 * @Note If this property is not provided, the screenshot is not saved.
-	 */
-	save?: string;
-}
+const WindowsSSMethodNames = keys<WindowsSS>();
 
-export class WindowsSS {
-	public static async info() {
-		const child = childProcess.spawn(
-			'powershell',
-			[absoluteInfoLib],
-		);
+export class WindowsSSFactory {
+	public create() {
+		const instance = new WindowsSS();
 
-		return JSON.parse(
-			(
-				await WindowsSS.getBufferFromStream(child.stdout)
-			)
-				.toString('utf8'),
-		) as DisplayInfo[];
-	}
-
-	public static async screenshot(options: ScreenshotOptions = {}) {
-		if (!options.displayId) {
-			options.displayId = (await WindowsSS.info())[0].id;
-		}
-
-		if (options.save
-			&& !options.format) {
-			// @ts-expect-error
-			options.format = options.save.substr(options.save.lastIndexOf('.') + 1);
-		}
-
-		const child = childProcess.spawn(
-			'powershell',
-			[
-				absoluteCoreLib,
-				['--DeviceName', options.displayId],
-				options.format ? 	['--Format', options.format] : [],
-				options.crop ? 		['--Crop', options.crop.join(',')] : [],
-				options.bounds ? 	['--Bounds', options.bounds.join(',')] : [],
-			].flat(),
-		);
-
-		const buffer = await WindowsSS.getBufferFromStream(child.stdout);
-
-		if (options.save) {
-			await fs.writeFile(options.save, buffer, { encoding: 'binary' });
-		}
-
-		return buffer;
-	}
-
-	private static async getBufferFromStream(stream: NodeJS.ReadableStream) {
-		return new Promise<Buffer>((resolve, reject) => {
-			const buffers: Buffer[] = [];
-
-			stream.on('data', (chunk) => {
-				buffers.push(chunk);
+		WindowsSSMethodNames.forEach((methodName) => {
+			const isSyncVariant = methodName.endsWith('Sync');
+			const baseMethodName = isSyncVariant ? methodName.replace(/Sync$/, '') : methodName;
+			const impl = edge.func({
+				assemblyFile: 'SS',
+				typeName: 'SS.Bridge',
+				methodName: `Invoke${baseMethodName[0].toUpperCase()}${baseMethodName.substr(1)}`,
 			});
-			stream.on('end', () => {
-				resolve(Buffer.concat(buffers));
-			});
-			stream.on('error', (error) => {
-				reject(error);
-			});
+
+			if (isSyncVariant) {
+				// @ts-expect-error
+				instance[methodName] = (...args) => impl([...args], true);
+			} else {
+				// @ts-expect-error
+				instance[methodName] = async (...args) => new Promise<unknown>((resolve, reject) => {
+					impl([...args], (err, res) => {
+						if (err) {
+							reject(err);
+
+							return;
+						}
+
+						resolve(res);
+					});
+				});
+			}
 		});
+
+		return instance;
 	}
+}
+
+export interface WindowsSS {
+	captureMonitorByIndex(deviceIndex: number, config?: Configuration): Promise<Buffer | null>;
+	captureMonitorByIndexSync: UnpromisifyWindowsSS<'captureMonitorByIndex'>;
+	captureMonitorByName(deviceName: string, config?: Configuration): Promise<Buffer | null>;
+	captureMonitorByNameSync: UnpromisifyWindowsSS<'captureMonitorByName'>;
+	capturePrimaryMonitor(config: Configuration): Promise<Buffer | null>;
+	capturePrimaryMonitorSync: UnpromisifyWindowsSS<'capturePrimaryMonitor'>;
+	captureWindowByTitle(title: string, config?: Configuration): Promise<Buffer | null>;
+	captureWindowByTitleSync: UnpromisifyWindowsSS<'captureWindowByTitle'>;
+	captureActiveWindow(config?: Configuration): Promise<Buffer | null>;
+	captureActiveWindowSync: UnpromisifyWindowsSS<'captureActiveWindow'>;
+	getMonitorInfos(): MonitorInfo[];
+	getMonitorInfosSync: UnpromisifyWindowsSS<'getMonitorInfos'>;
 }
 
 export const {
-	info,
-	screenshot,
-} = WindowsSS;
-
+	captureMonitorByIndex,
+	captureMonitorByIndexSync,
+	captureMonitorByName,
+	captureMonitorByNameSync,
+	capturePrimaryMonitor,
+	capturePrimaryMonitorSync,
+	captureWindowByTitle,
+	captureWindowByTitleSync,
+	captureActiveWindow,
+	captureActiveWindowSync,
+	getMonitorInfos,
+	getMonitorInfosSync,
+} = new WindowsSSFactory().create();
