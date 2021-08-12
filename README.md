@@ -10,16 +10,16 @@ Take screenshots quickly on Windows by communicating directly with native API's.
 
 ## Benchmark
 
-Using [this repo](https://github.com/sxxov/windows-ss-benchmark). The numbers below were taken over 1000 runs, each at 2560x1440[^*], outputing `bmp`.
+Using [this repo](https://github.com/sxxov/windows-ss-benchmark). The numbers below were taken over 1000 runs, each at 2560x1440<sup>\*</sup>, outputing `bmp`.
 
 | Library            | Save to buffer | Save to file |
 | ------------------ | -------------- | ------------ |
 | windows-ss         | **52ms**       | **51ms**     |
 | screenshot-desktop | 152ms          | 141ms        |
-| desktop-screenshot | n/a            | 63ms[^**]    |
+| desktop-screenshot | n/a            | 63ms<sup>\*\*</sup>    |
 
-[^*]: Except for `desktop-screenshot`, it ran at 1706x960 as it's DPI unaware.
-[^**]: Times are relative to lower resolution of 1706x960. If interpolated back to 1440p according to a DPI of 1.5, `63 * (1.5 ^ 2) = 141ms`
+<sup>\*</sup>  Except for `desktop-screenshot`, it ran at 1706x960 as it's DPI unaware.
+<sup>\*\*</sup>  Times are relative to lower resolution of 1706x960. If interpolated back to 1440p according to a DPI of 1.5, `63 * (1.5 ^ 2) = 141ms`
 
 
 
