@@ -65,7 +65,7 @@ export interface WindowsSS {
 	captureWindowByTitleSync: UnpromisifyWindowsSS<'captureWindowByTitle'>;
 	captureActiveWindow(config?: Configuration): Promise<Buffer | null>;
 	captureActiveWindowSync: UnpromisifyWindowsSS<'captureActiveWindow'>;
-	getMonitorInfos(): MonitorInfo[];
+	getMonitorInfos(): Promise<MonitorInfo[]>;
 	getMonitorInfosSync: UnpromisifyWindowsSS<'getMonitorInfos'>;
 }
 
