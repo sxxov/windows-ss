@@ -1,6 +1,6 @@
 {
   "name": "windows-ss",
-  "version": "1.0.1x",
+  "version": "1.0.1xx",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
