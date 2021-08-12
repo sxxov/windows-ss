@@ -8,8 +8,7 @@ export class ClientError extends Error {
 		(Error as any).captureStackTrace?.(this, this.constructor);
 	}
 
-	// like a "from" call, but more ambiguous
-	public static toError<T extends ClientError>(obj: PlainErrorObject | Error): T {
+	public static from<T = ClientError>(obj: PlainErrorObject | Error): T {
 		const clientError = new this();
 
 		clientError.name = obj.name;
