@@ -14,7 +14,7 @@ const production = !process.env.ROLLUP_WATCH;
 const onwarn = (message, warn) => {
 	const ignored = {
 		EVAL: ['node_modules'],
-		CIRCULAR_DEPENDENCY: [''],
+		// CIRCULAR_DEPENDENCY: [''],
 	};
 	const ignoredKeys = Object.keys(ignored);
 	const ignoredValues = Object.values(ignored);
