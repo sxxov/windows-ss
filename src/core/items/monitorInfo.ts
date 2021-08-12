@@ -4,5 +4,4 @@ export interface MonitorInfo {
 	monitor: PlainRectangle;
 	workArea: PlainRectangle;
 	deviceName: string;
-	dpiScale: number;
 }
