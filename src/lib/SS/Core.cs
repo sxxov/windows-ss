@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
-using Microsoft.VisualBasic;
 
 namespace SS
 {
