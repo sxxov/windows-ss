@@ -79,23 +79,23 @@ namespace SS
 		{
             if (Configuration.Bounds != null)
             {
-                rect.Right = rect.Left + Configuration.Bounds.Right;
-                rect.Left += Configuration.Bounds.Left;
-                rect.Bottom = rect.Top + Configuration.Bounds.Bottom;
-                rect.Top += Configuration.Bounds.Top;
+                rect.right = rect.left + Configuration.Bounds.right;
+                rect.left += Configuration.Bounds.left;
+                rect.bottom = rect.top + Configuration.Bounds.bottom;
+                rect.top += Configuration.Bounds.top;
             }
 
             if (Configuration.Crop != null)
             {
-                rect.Left += Configuration.Crop.Left;
-                rect.Top += Configuration.Crop.Top;
-                rect.Right -= Configuration.Crop.Right;
-                rect.Bottom -= Configuration.Crop.Bottom;
+                rect.left += Configuration.Crop.left;
+                rect.top += Configuration.Crop.top;
+                rect.right -= Configuration.Crop.right;
+                rect.bottom -= Configuration.Crop.bottom;
             }
 
 			// get the size
-			var width = rect.Width;
-			var height = rect.Height;
+			var width = rect.GetWidth();
+			var height = rect.GetHeight();
 
 			// create a device context we can copy to
 			var hdcDest = GDI32.CreateCompatibleDC(hdcSrc);
@@ -105,7 +105,7 @@ namespace SS
 			// select the bitmap object
 			var hOld = GDI32.SelectObject(hdcDest, hBitmap);
 			// bitblt over
-			GDI32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, rect.Left, rect.Top, GDI32.SRCCOPY);
+			GDI32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, rect.left, rect.top, GDI32.SRCCOPY);
 			// restore selection
 			GDI32.SelectObject(hdcDest, hOld);
 			// clean up
@@ -131,7 +131,7 @@ namespace SS
 
 			if (result == null)
 			{
-				throw new NoMonitorMatchException(deviceIndex + "is not the index of any installed monitor", nameof(deviceIndex));
+				throw new NoMonitorMatchException(deviceIndex + " is not the index of any installed monitor", nameof(deviceIndex));
 			}
 
 			return result;

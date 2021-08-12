@@ -1,16 +1,17 @@
 namespace SS
 {
+	// mirrors the TS object
 	public class MonitorInfo
 	{
-		public PlainRectangle Monitor;
-		public PlainRectangle WorkArea;
-		public string DeviceName;
+		public PlainRectangle monitor;
+		public PlainRectangle workArea;
+		public string deviceName;
 
 		public MonitorInfo(PlainRectangle monitor, PlainRectangle workArea, string deviceName)
 		{
-			Monitor = monitor;
-			WorkArea = workArea;
-			DeviceName = deviceName;
+			this.monitor = monitor;
+			this.workArea = workArea;
+			this.deviceName = deviceName;
 		}
 	}
 }
