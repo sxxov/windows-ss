@@ -19,6 +19,7 @@ Using [this repo](https://github.com/sxxov/windows-ss-benchmark). The numbers be
 | desktop-screenshot | n/a            | 63ms<sup>\*\*</sup>    |
 
 <sup>\*</sup>  Except for `desktop-screenshot`, it ran at 1706x960 as it's DPI unaware.
+
 <sup>\*\*</sup>  Times are relative to lower resolution of 1706x960. If interpolated back to 1440p according to a DPI of 1.5, `63 * (1.5 ^ 2) = 141ms`
 
 
