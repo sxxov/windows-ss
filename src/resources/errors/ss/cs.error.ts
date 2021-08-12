@@ -17,6 +17,9 @@ export interface CSAggregateException extends CSBaseException {
 	InnerException: CSException;
 }
 
+/**
+ * Based on C#'s `SystemException`.
+ */
 export class CSError extends ClientError {
 	@unenumerable
 	public raw!: CSException;

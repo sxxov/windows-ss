@@ -8,6 +8,9 @@ export interface CSArgumentError extends CSError {
 	paramName: string;
 }
 
+/**
+ * Based on C#'s `ArgumentException`.
+ */
 @CSError.creatable('System.ArgumentError')
 export class CSArgumentError extends CSError {
 	public static from<T = CSArgumentError>(error: CSAggregateException | CSException): T {
