@@ -71,16 +71,16 @@ await capturePrimaryMonitor({
 ### Table of Contents
 
 * [Methods](#methods)
-  * <code>[getMonitorInfos](#getMonitorInfos)(): Promise<[MonitorInfo](#monitorinfo)[]></code>
-  * <code>[getMonitorInfosSync](#getMonitorInfosSync)(): [MonitorInfo](#monitorinfo)[]</code>
-  * <code>[captureMonitorByIndex](#captureMonitorByIndex)(deviceIndex: [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), config?: [Configuration](#configuration)): Promise\<[Buffer](https://nodejs.org/api/buffer.html) | null\></code>
-  * <code>[captureMonitorByIndexSync](#captureMonitorByIndexSync)(deviceIndex: [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), config?: [Configuration](#configuration)): [Buffer](https://nodejs.org/api/buffer.html) | null</code>
-  * <code>[captureMonitorByName](#captureMonitorByName)(deviceName: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), config?: [Configuration](#configuration)): Promise\<[Buffer](https://nodejs.org/api/buffer.html) | null\></code>
-  * <code>[captureMonitorByNameSync](#captureMonitorByNameSync)(deviceName: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), config?: [Configuration](#configuration)): [Buffer](https://nodejs.org/api/buffer.html) | null</code>
-  * <code>[captureWindowByTitle](#captureWindowByTitle)(title: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), config?: [Configuration](#configuration)): Promise\<[Buffer](https://nodejs.org/api/buffer.html) | null\></code>
-  * <code>[captureWindowByTitleSync](#captureWindowByTitleSync)(title: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), config?: [Configuration](#configuration)): [Buffer](https://nodejs.org/api/buffer.html) | null</code>
-  * <code>[captureActiveWindow](#captureActiveWindow)(config?: [Configuration](#configuration)): Promise\<[Buffer](https://nodejs.org/api/buffer.html) | null\></code>
-  * <code>[captureActiveWindowSync](#captureActiveWindowSync)(config?: [Configuration](#configuration)): [Buffer](https://nodejs.org/api/buffer.html) | null</code>
+  * <code>[getMonitorInfos](#getMonitorInfos)</code>
+  * <code>[getMonitorInfosSync](#getMonitorInfosSync)</code>
+  * <code>[captureMonitorByIndex](#captureMonitorByIndex)</code>
+  * <code>[captureMonitorByIndexSync](#captureMonitorByIndexSync)</code>
+  * <code>[captureMonitorByName](#captureMonitorByName)</code>
+  * <code>[captureMonitorByNameSync](#captureMonitorByNameSync)</code>
+  * <code>[captureWindowByTitle](#captureWindowByTitle)</code>
+  * <code>[captureWindowByTitleSync](#captureWindowByTitleSync)</code>
+  * <code>[captureActiveWindow](#captureActiveWindow)</code>
+  * <code>[captureActiveWindowSync](#captureActiveWindowSync)</code>
 * [Interfaces](#interfaces)
   * [`Configuration`](#configuration)
   * [`MonitorInfo`](#monitorinfo)
@@ -94,7 +94,7 @@ await capturePrimaryMonitor({
 
 ### Methods
 
-#### captureWindowByTitle`getMonitorInfos`
+#### `getMonitorInfos`
 
 #### `getMonitorInfosSync`
 
@@ -108,6 +108,10 @@ Returns information about the the currently connected monitors.
 
 * <code>Promise\<[MonitorInfo](#monitorinfo)[]\></code>  —— <code>[MonitorInfo](#monitorinfo)[]</code>
   * An array of [`MonitorInfo`](#monitorinfo)s gotten from the current system.
+
+##### Throws
+
+* n/a
 
 ##### Example
 
@@ -139,13 +143,13 @@ getMonitorInfosSync();
 
 #### `captureMonitorByIndexSync`
 
-Captures a screenshot of the monitor matching the index.
+Captures a screenshot of the monitor matching the device index.
 
 ##### Parameters
 
 * <code>deviceIndex: [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)</code> 
   * Index of monitor according to Windows.
-* *(Optional)*  <code>options: [Configuration](#configuration)</code> 
+* *(Optional)*  <code>config: [Configuration](#configuration)</code> 
   * Additional options for capturing the screenshot.
 
 ##### Returns
@@ -155,9 +159,9 @@ Captures a screenshot of the monitor matching the index.
 
 ##### Throws
 
-* `NoMatchError`
-* `InvalidArgumentCountError`
-* `InvalidConfigurationError`
+* [`NoMatchError`](#nomatcherror)
+* [`InvalidArgumentCountError`](#invalidargumentcounterror)
+* [`InvalidConfigurationError`](#invalidconfigurationerror)
 
 ##### Example
 
@@ -176,13 +180,13 @@ captureMonitorByIndexSync(0);
 
 #### `captureMonitorByNameSync`
 
-Captures a screenshot of the monitor matching the index.
+Captures a screenshot of the monitor matching the device name.
 
 ##### Parameters
 
 * <code>deviceName: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)</code> 
   * Name of monitor according to Windows.
-* *(Optional)*  <code>options: [Configuration](#configuration)</code> 
+* *(Optional)*  <code>config: [Configuration](#configuration)</code> 
   * Additional options for capturing the screenshot.
 
 ##### Returns
@@ -192,9 +196,9 @@ Captures a screenshot of the monitor matching the index.
 
 ##### Throws
 
-* `NoMatchError`
-* `InvalidArgumentCountError`
-* `InvalidConfigurationError`
+* [`NoMatchError`](#nomatcherror)
+* [`InvalidArgumentCountError`](#invalidargumentcounterror)
+* [`InvalidConfigurationError`](#invalidconfigurationerror)
 
 ##### Example
 
@@ -217,7 +221,7 @@ Captures a screenshot of the primary monitor.
 
 ##### Parameters
 
-* *(Optional)*  <code>options: [Configuration](#configuration)</code> 
+* *(Optional)*  <code>config: [Configuration](#configuration)</code> 
   * Additional options for capturing the screenshot.
 
 ##### Returns
@@ -227,7 +231,7 @@ Captures a screenshot of the primary monitor.
 
 ##### Throws
 
-* `InvalidConfigurationError`
+* [`InvalidConfigurationError`](#invalidconfigurationerror)
 
 ##### Example
 
@@ -250,7 +254,7 @@ Captures a screenshot of the window matching the title.
 
 * <code>title: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)</code> 
   * Title of window.
-* *(Optional)*  <code>options: [Configuration](#configuration)</code> 
+* *(Optional)*  <code>config: [Configuration](#configuration)</code> 
   * Additional options for capturing the screenshot.
 
 ##### Returns
@@ -260,9 +264,9 @@ Captures a screenshot of the window matching the title.
 
 ##### Throws
 
-* `NoMatchError`
-* `InvalidArgumentCountError`
-* `InvalidConfigurationError`
+* [`NoMatchError`](#nomatcherror)
+* [`InvalidArgumentCountError`](#invalidargumentcounterror)
+* [`InvalidConfigurationError`](#invalidconfigurationerror)
 
 ##### Example
 
@@ -283,7 +287,7 @@ Captures a screenshot of the currently active/focused window.
 
 ##### Parameters
 
-* *(Optional)*  <code>options: [Configuration](#configuration)</code> 
+* *(Optional)*  <code>config: [Configuration](#configuration)</code> 
   * Additional options for capturing the screenshot.
 
 ##### Returns
@@ -293,7 +297,7 @@ Captures a screenshot of the currently active/focused window.
 
 ##### Throws
 
-* `InvalidConfigurationError`
+* [`InvalidConfigurationError`](#invalidconfigurationerror)
 
 ##### Example
 
@@ -348,7 +352,6 @@ Contains a description of a monitor.
 * <code>monitor: [PlainRectangle](#plainrectangle)</code> — The resolution of the entire monitor.
 * <code>workArea: [PlainRectangle](#plainrectangle)</code> — The resolution of the entire monitor excluding the taskbar.
 * <code>deviceName: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)</code> — The device name of the monitor.
-* <code>dpiScale: [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)</code> — The DPI scale of the monitor.
 
 
 
@@ -457,11 +460,10 @@ Based on C#'s `SystemException`.
 
 ##### Properties
 
-* *(Inherited)* <code>paramName: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)</code>
+* <code>raw: CSException</code>
+  * The `InnerException` property of the raw [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) object thrown by `edge-js`
 * *(Inherited)* <code>name: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)</code>
 * *(Inherited)* <code>stack: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)</code>
-* *(Inherited)* <code>raw: CSException</code>
-  * The `InnerException` property of the raw [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) object thrown by `edge-js`
 
 
 
