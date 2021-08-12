@@ -1,5 +1,7 @@
 # windows-ss
 
+[![npm version](https://badge.fury.io/js/windows-ss.svg)](https://badge.fury.io/js/windows-ss)
+
 Take screenshots quickly on Windows by communicating directly with native API's.
 
 > Did I mention that it's DPI aware too?
