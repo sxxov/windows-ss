@@ -17,7 +17,7 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
-		"useDefineForClassFields": true,
+		"useDefineForClassFields": false,
 		"allowSyntheticDefaultImports": true,
 		"importsNotUsedAsValues": "error",
 		"experimentalDecorators": true,
