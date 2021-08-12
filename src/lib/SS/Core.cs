@@ -74,23 +74,23 @@ namespace SS
 			// return img;
 		}
 
-    	private static Image CaptureWindowFromDC(IntPtr hdcSrc, PlainRectangle rect)
+		private static Image CaptureWindowFromDC(IntPtr hdcSrc, PlainRectangle rect)
 		{
-            if (Configuration.Bounds != null)
-            {
-                rect.right = rect.left + Configuration.Bounds.right;
-                rect.left += Configuration.Bounds.left;
-                rect.bottom = rect.top + Configuration.Bounds.bottom;
-                rect.top += Configuration.Bounds.top;
-            }
+			if (Configuration.Bounds != null)
+			{
+				rect.right = rect.left + Configuration.Bounds.right;
+				rect.left += Configuration.Bounds.left;
+				rect.bottom = rect.top + Configuration.Bounds.bottom;
+				rect.top += Configuration.Bounds.top;
+			}
 
-            if (Configuration.Crop != null)
-            {
-                rect.left += Configuration.Crop.left;
-                rect.top += Configuration.Crop.top;
-                rect.right -= Configuration.Crop.right;
-                rect.bottom -= Configuration.Crop.bottom;
-            }
+			if (Configuration.Crop != null)
+			{
+				rect.left += Configuration.Crop.left;
+				rect.top += Configuration.Crop.top;
+				rect.right -= Configuration.Crop.right;
+				rect.bottom -= Configuration.Crop.bottom;
+			}
 
 			// get the size
 			var width = rect.GetWidth();
@@ -122,9 +122,9 @@ namespace SS
 			return CaptureMonitor(0);
 		}
 
-        public static Image CaptureMonitor(int deviceIndex)
+		public static Image CaptureMonitor(int deviceIndex)
 		{
-            var i = 0;
+			var i = 0;
 
 			var result = CaptureMonitor((_) => i++ == deviceIndex);
 
@@ -148,7 +148,7 @@ namespace SS
 			return result;
 		}
 
-        private static Image? CaptureMonitor(Func<string, bool> comparer)
+		private static Image? CaptureMonitor(Func<string, bool> comparer)
 		{
 			var hdc = User32.GetDC(IntPtr.Zero);
 			Image? image = null;
@@ -182,9 +182,9 @@ namespace SS
 			return image;
 		}
 
-        public static List<MonitorInfo> GetMonitorInfos()
-        {
-            var monitorInfos = new List<MonitorInfo>();
+		public static List<MonitorInfo> GetMonitorInfos()
+		{
+			var monitorInfos = new List<MonitorInfo>();
 
 			User32.EnumDisplayMonitors(
 				IntPtr.Zero,
@@ -197,20 +197,20 @@ namespace SS
 					User32.GetMonitorInfo(hMonitor, ref mi);
 
 					monitorInfos.Add(new MonitorInfo(
-                        new PlainRectangle(
-                            mi.Monitor.left,
-                            mi.Monitor.top,
-                            mi.Monitor.right,
-                            mi.Monitor.bottom
-                        ),
-                        new PlainRectangle(
-                            mi.WorkArea.left,
-                            mi.WorkArea.top,
-                            mi.WorkArea.right,
-                            mi.WorkArea.bottom
-                        ),
-                        mi.DeviceName
-                    ));
+						new PlainRectangle(
+							mi.Monitor.left,
+							mi.Monitor.top,
+							mi.Monitor.right,
+							mi.Monitor.bottom
+						),
+						new PlainRectangle(
+							mi.WorkArea.left,
+							mi.WorkArea.top,
+							mi.WorkArea.right,
+							mi.WorkArea.bottom
+						),
+						mi.DeviceName
+					));
 
 					return true;
 				},
@@ -218,7 +218,7 @@ namespace SS
 			);
 
 			return monitorInfos;
-        }
+		}
 
 		public static ImageFormat GetImageFormatFrom(string format)
 		{
@@ -237,11 +237,11 @@ namespace SS
 			};
 		}
 
-        public static byte[]? FlushImage(Image? image)
+		public static byte[]? FlushImage(Image? image)
 		{
 			if (image == null) {
-                throw new ArgumentNullException(nameof(image));
-            }
+				throw new ArgumentNullException(nameof(image));
+			}
 
 			ImageFormat format = GetImageFormatFrom(Configuration.Format);
 
@@ -327,7 +327,7 @@ namespace SS
 
 			// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-monitorfromwindow
 			[DllImport( "user32.dll" )]
-    		public static extern IntPtr MonitorFromWindow(IntPtr handle, int flags);
+			public static extern IntPtr MonitorFromWindow(IntPtr handle, int flags);
 
 			[DllImport("user32.dll")]
 			public static extern bool PrintWindow(IntPtr hwnd, IntPtr hDC, uint nFlags);
@@ -338,8 +338,8 @@ namespace SS
 			[DllImport("Shcore.dll")]
 			public static extern IntPtr GetDpiForMonitor(IntPtr hMonitor, int dpiType, out uint dpiX, out uint dpiY);
 
-            [DllImport("Shcore.dll")]
-            public static extern IntPtr SetProcessDpiAwareness(int value);
-        }
+			[DllImport("Shcore.dll")]
+			public static extern IntPtr SetProcessDpiAwareness(int value);
+		}
 	}
 }

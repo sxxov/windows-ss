@@ -5,26 +5,26 @@ using System.Dynamic;
 namespace SS
 {
 	public class NullableExpandoObject : DynamicObject
-    {
+	{
 		private IDictionary<string, object?> Dictionary = new Dictionary<string, object?>();
 
 		public override bool TryGetMember(GetMemberBinder binder, out object? result)
-        {
+		{
 			try {
 				result = Dictionary[binder.Name];
 			} catch (Exception) {
 				result = null;
 			}
 
-            return true;
-        }
+			return true;
+		}
 
-        public override bool TrySetMember(SetMemberBinder binder, object? value)
-        {
-            Dictionary[binder.Name] = value;
+		public override bool TrySetMember(SetMemberBinder binder, object? value)
+		{
+			Dictionary[binder.Name] = value;
 
-            return true;
-        }
+			return true;
+		}
 
 		public static NullableExpandoObject From(IDictionary<string, object?>? dictionary) {
 			if (dictionary == null) {
@@ -36,5 +36,5 @@ namespace SS
 				Dictionary = dictionary
 			};
 		}
-    }
+	}
 }
